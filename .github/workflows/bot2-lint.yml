@@ -1,0 +1,48 @@
+name: Bot 2 - Lint
+on:
+  pull_request:
+    paths:
+      - 'packages/**'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install shellcheck
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+      - name: Lint build.sh files
+        run: |
+          FAILED=0
+          FILES=$(git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.sha }}" | grep 'build.sh' || true)
+          if [ -z "$FILES" ]; then
+            echo "Нет изменённых build.sh."
+            exit 0
+          fi
+          for file in $FILES; do
+            echo "Линтим $file"
+            if ! shellcheck "$file"; then
+              echo "Синтаксические ошибки в $file"
+              FAILED=1
+            fi
+            for var in TERMUX_PKG_HOMEPAGE TERMUX_PKG_DESCRIPTION TERMUX_PKG_LICENSE TERMUX_PKG_MAINTAINER TERMUX_PKG_VERSION TERMUX_PKG_SRCURL TERMUX_PKG_SHA256; do
+              if ! grep -q "^$var=" "$file"; then
+                echo "В $file отсутствует обязательная переменная $var"
+                FAILED=1
+              fi
+            done
+          done
+          exit $FAILED
+      - name: Comment on failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'Bot 2 (Lint): найдены синтаксические ошибки или отсутствуют обязательные TERMUX_PKG_* переменные в build.sh. Проверьте логи в Actions.'
+            })
