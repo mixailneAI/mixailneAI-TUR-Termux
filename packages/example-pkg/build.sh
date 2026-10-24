@@ -1,3 +1,6 @@
+# shellcheck shell=bash
+# shellcheck disable=SC2034
+
 TERMUX_PKG_HOMEPAGE=https://github.com/example/project
 TERMUX_PKG_DESCRIPTION="Example package template"
 TERMUX_PKG_LICENSE="MIT"
