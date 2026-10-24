@@ -1,0 +1,12 @@
+Package: hello-tur
+Version: 1.0.0
+Architecture: all
+Maintainer: mixailneAI
+Description: Auto built package
+Filename: dists/termux/extras/binary-all/hello-tur_1.0.0_all.deb
+Size: 808
+MD5Sum: 12d10eabf6272a95cd46fb689f6ec48a
+SHA1: 54dccc9de498cd71e6043a50d9aac6d7fd4bb623
+SHA256: a1125624c10fbf37f2547a4095454755c4158901847ebfac894e60453849805c
+SHA512: 4c73e710500789951cea8688ebfa01c1e9e9e1905863e9f73003119b7472d05051b24746470d906a58634d2d61872351544511345edeca40240de83ae5a0a881
+
