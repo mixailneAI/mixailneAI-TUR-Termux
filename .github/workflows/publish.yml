@@ -1,0 +1,51 @@
+name: Auto Publish Repo
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'packages/**'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y dpkg-dev
+          pip install termux-apt-repo
+      - name: Build .deb packages
+        run: |
+          mkdir -p debs
+          for pkgdir in packages/*/; do
+            pkgname=$(basename "$pkgdir")
+            if [ "$pkgname" = "example-pkg" ]; then continue; fi
+            
+            # Заглушка для сборки: создаем тестовый .deb
+            # В реальности тут должен быть вызов build-package.sh из termux-packages
+            mkdir -p /tmp/build/DEBIAN /tmp/build/data/data/com.termux/files/usr/bin
+            echo "Package: $pkgname" > /tmp/build/DEBIAN/control
+            echo "Version: 1.0.0" >> /tmp/build/DEBIAN/control
+            echo "Architecture: all" >> /tmp/build/DEBIAN/control
+            echo "Maintainer: mixailneAI" >> /tmp/build/DEBIAN/control
+            echo "Description: Auto built package" >> /tmp/build/DEBIAN/control
+            echo '#!/data/data/com.termux/files/usr/bin/bash' > /tmp/build/data/data/com.termux/files/usr/bin/$pkgname
+            echo "echo 'Привет от $pkgname!'" >> /tmp/build/data/data/com.termux/files/usr/bin/$pkgname
+            chmod +x /tmp/build/data/data/com.termux/files/usr/bin/$pkgname
+            
+            dpkg-deb --build /tmp/build debs/${pkgname}_1.0.0_all.deb
+            rm -rf /tmp/build
+          done
+      - name: Generate APT Repo
+        run: termux-apt-repo debs/ repo/
+      - name: Commit and Push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add repo/
+          git commit -m "Auto-update APT repo [skip ci]" || exit 0
+          git push
