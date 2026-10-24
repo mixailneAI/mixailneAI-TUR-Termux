@@ -2,9 +2,9 @@
 
 > Personal APT repository for Termux. Non-official, not affiliated with Termux or TUR.
 
-[![Bot 1 - Star Check](https://github.com/mixailneAI/mixailneAI-TUR-Termux/actions/workflows/bot1-star-check.yml/badge.svg)](https://github.com/mixailneAI/mixailneAI-TUR-Termux/actions/workflows/bot1-star-check.yml)
-[![Bot 2 - Lint](https://github.com/mixailneAI/mixailneAI-TUR-Termux/actions/workflows/bot2-lint.yml/badge.svg)](https://github.com/mixailneAI/mixailneAI-TUR-Termux/actions/workflows/bot2-lint.yml)
-[![Bot 3 - Build](https://github.com/mixailneAI/mixailneAI-TUR-Termux/actions/workflows/bot3-build.yml/badge.svg)](https://github.com/mixailneAI/mixailneAI-TUR-Termux/actions/workflows/bot3-build.yml)
+[![Bot 1 - Star Check](https://github.com/mixailneAI/mixailneAI-TUR-Termux/repo/actions/workflows/bot1-star-check.yml/badge.svg)](https://github.com/mixailneAI/mixailneAI-TUR-Termux/repo/actions/workflows/bot1-star-check.yml)
+[![Bot 2 - Lint](https://github.com/mixailneAI/mixailneAI-TUR-Termux/repo/actions/workflows/bot2-lint.yml/badge.svg)](https://github.com/mixailneAI/mixailneAI-TUR-Termux/repo/actions/workflows/bot2-lint.yml)
+[![Bot 3 - Build](https://github.com/mixailneAI/mixailneAI-TUR-Termux/repo/actions/workflows/bot3-build.yml/badge.svg)](https://github.com/mixailneAI/mixailneAI-TUR-Termux/repo/actions/workflows/bot3-build.yml)
 
 ## Что это
 
@@ -21,13 +21,13 @@ pkg install имя-пакета
 Одной командой:
 
 ~~~bash
-curl -sL https://raw.githubusercontent.com/mixailneAI/mixailneAI-TUR-Termux/main/install.sh | bash
+curl -sL https://raw.githubusercontent.com/mixailneAI/mixailneAI-TUR-Termux/repo/main/install.sh | bash
 ~~~
 
 Или вручную:
 
 ~~~bash
-echo "deb [trusted=yes arch=all] https://mixailneai.github.io/mixailneAI-TUR-Termux/ termux extras" > $PREFIX/etc/apt/sources.list.d/mixailneai-tur.list
+echo "deb [trusted=yes arch=all] https://mixailneai.github.io/mixailneAI-TUR-Termux/repo/ termux extras" > $PREFIX/etc/apt/sources.list.d/mixailneai-tur.list
 pkg update
 ~~~
 
@@ -91,7 +91,7 @@ Bot 3 запускается вручную (**Actions → Bot 3 - Build → Run
 ## Структура репозитория
 
 ~~~
-mixailneAI-TUR-Termux/
+mixailneAI-TUR-Termux/repo/
 ├── .github/workflows/          # GitHub Actions (боты)
 │   ├── bot1-star-check.yml
 │   ├── bot2-lint.yml

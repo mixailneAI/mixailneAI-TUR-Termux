@@ -1,7 +1,7 @@
 #!/data/data/com.termux/files/usr/bin/bash
 set -e
 
-REPO_URL="https://mixailneai.github.io/mixailneAI-TUR-Termux/"
+REPO_URL="https://mixailneai.github.io/mixailneAI-TUR-Termux/repo/"
 REPO_NAME="mixailneai-tur"
 LIST_FILE="$PREFIX/etc/apt/sources.list.d/${REPO_NAME}.list"
 
