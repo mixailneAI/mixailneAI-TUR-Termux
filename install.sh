@@ -16,7 +16,7 @@ echo "URL: $REPO_URL"
 if [ -f "$LIST_FILE" ]; then
     echo "Репозиторий уже подключён: $LIST_FILE"
 else
-    echo "deb [trusted=yes] ${REPO_URL} termux extras" > "$LIST_FILE"
+    echo "deb [trusted=yes arch=all] ${REPO_URL} termux extras" > "$LIST_FILE"
     echo "Файл репозитория создан: $LIST_FILE"
 fi
 
@@ -30,4 +30,4 @@ echo "Установка пакетов:"
 echo "  pkg install <имя-пакета>"
 echo ""
 echo "Пример:"
-echo "  pkg install mytool"
+echo "  pkg install hello-tur"

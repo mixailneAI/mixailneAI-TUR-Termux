@@ -27,7 +27,7 @@ curl -sL https://raw.githubusercontent.com/mixailneAI/mixailneAI-TUR-Termux/main
 Или вручную:
 
 ~~~bash
-echo "deb [trusted=yes] https://mixailneai.github.io/mixailneAI-TUR-Termux/ termux extras" > $PREFIX/etc/apt/sources.list.d/mixailneai-tur.list
+echo "deb [trusted=yes arch=all] https://mixailneai.github.io/mixailneAI-TUR-Termux/ termux extras" > $PREFIX/etc/apt/sources.list.d/mixailneai-tur.list
 pkg update
 ~~~
 
