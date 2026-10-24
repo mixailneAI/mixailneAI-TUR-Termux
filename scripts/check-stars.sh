@@ -4,6 +4,11 @@ set -e
 BASE_SHA="${1}"
 HEAD_SHA="${2}"
 
+if [ -z "$BASE_SHA" ] || [ -z "$HEAD_SHA" ]; then
+  echo "Использование: $0 <base_sha> <head_sha>"
+  exit 2
+fi
+
 CHANGED=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" | grep 'build.sh' || true)
 
 if [ -z "$CHANGED" ]; then

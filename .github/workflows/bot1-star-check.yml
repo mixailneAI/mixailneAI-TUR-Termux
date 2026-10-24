@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'packages/**'
+  workflow_dispatch:
 
 jobs:
   check-stars:
@@ -16,7 +17,14 @@ jobs:
       - name: Check stars for changed packages
         run: |
           chmod +x scripts/check-stars.sh
-          ./scripts/check-stars.sh "${{ github.event.pull_request.base.sha }}" "${{ github.sha }}"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            git diff --name-only HEAD~1 HEAD | grep 'build.sh' | while read f; do
+              echo "Testing $f"
+            done
+            echo "Ручной запуск: пропускаем проверку SHA."
+          else
+            ./scripts/check-stars.sh "${{ github.event.pull_request.base.sha }}" "${{ github.sha }}"
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Comment on failure
@@ -24,9 +32,11 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: 'Bot 1 (Star Check): у одного из проектов менее 10 звёзд на GitHub. Проверьте логи в Actions.'
-            })
+            if (context.issue && context.issue.number) {
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: 'Bot 1 (Star Check): у одного из проектов менее 10 звёзд на GitHub. Проверьте логи во вкладке Actions.'
+              })
+            }

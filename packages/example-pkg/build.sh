@@ -1,5 +1,5 @@
 TERMUX_PKG_HOMEPAGE=https://github.com/example/project
-TERMUX_PKG_DESCRIPTION="Example package"
+TERMUX_PKG_DESCRIPTION="Example package template"
 TERMUX_PKG_LICENSE="MIT"
 TERMUX_PKG_MAINTAINER="@mixailneAI"
 TERMUX_PKG_VERSION=1.0.0

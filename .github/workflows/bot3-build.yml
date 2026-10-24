@@ -1,6 +1,11 @@
 name: Bot 3 - Build
 on:
   workflow_dispatch:
+    inputs:
+      package:
+        description: 'Имя пакета (пусто — все из packages/)'
+        required: false
+        default: ''
   pull_request:
     paths:
       - 'packages/**'
@@ -14,16 +19,18 @@ jobs:
           fetch-depth: 0
       - name: Clone termux-packages
         run: git clone --depth 1 https://github.com/termux/termux-packages.git /tmp/termux-packages
-      - name: Build changed packages
+      - name: Build packages
         run: |
           cd /tmp/termux-packages
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "${{ github.event.inputs.package }}" ]; then
+            PKGS="${{ github.event.inputs.package }}"
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             PKGS=$(ls "$GITHUB_WORKSPACE/packages")
           else
             PKGS=$(git -C "$GITHUB_WORKSPACE" diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.sha }}" | grep 'build.sh' | xargs -n1 dirname | xargs -n1 basename | sort -u)
           fi
           if [ -z "$PKGS" ]; then
-            echo "Нет изменённых пакетов, пропускаем."
+            echo "Нет пакетов для сборки."
             exit 0
           fi
           for pkgname in $PKGS; do
@@ -40,9 +47,11 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: 'Bot 3 (Build): сборка .deb не удалась. Проверьте логи в Actions.'
-            })
+            if (context.issue && context.issue.number) {
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: 'Bot 3 (Build): сборка .deb не удалась. Проверьте логи во вкладке Actions.'
+              })
+            }

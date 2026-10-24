@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'packages/**'
+  workflow_dispatch:
 
 jobs:
   lint:
@@ -16,7 +17,11 @@ jobs:
       - name: Lint build.sh files
         run: |
           FAILED=0
-          FILES=$(git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.sha }}" | grep 'build.sh' || true)
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            FILES=$(find packages -name build.sh)
+          else
+            FILES=$(git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.sha }}" | grep 'build.sh' || true)
+          fi
           if [ -z "$FILES" ]; then
             echo "Нет изменённых build.sh."
             exit 0
@@ -40,9 +45,11 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: 'Bot 2 (Lint): найдены синтаксические ошибки или отсутствуют обязательные TERMUX_PKG_* переменные в build.sh. Проверьте логи в Actions.'
-            })
+            if (context.issue && context.issue.number) {
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: 'Bot 2 (Lint): найдены синтаксические ошибки или отсутствуют обязательные TERMUX_PKG_* переменные в build.sh. Проверьте логи во вкладке Actions.'
+              })
+            }

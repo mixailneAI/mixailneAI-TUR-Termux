@@ -1,4 +1,6 @@
 *.deb
 debs/
-repo/
+!repo/
 build/
+.DS_Store
+*.log
