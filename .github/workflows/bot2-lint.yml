@@ -28,8 +28,6 @@ jobs:
           fi
           for file in $FILES; do
             echo "Линтим $file"
-            # Игнорируем SC2148 (нет shebang) и SC2034 (неиспользуемые переменные), 
-            # так как это специфика сборочной системы Termux
             if ! shellcheck -e SC2148,SC2034 "$file"; then
               echo "Ошибки в $file"
               FAILED=1
