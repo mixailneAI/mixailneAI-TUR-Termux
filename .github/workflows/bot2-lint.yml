@@ -28,6 +28,7 @@ jobs:
           fi
           for file in $FILES; do
             echo "Линтим $file"
+            # Вот тут мы игнорируем ошибку отсутствия shebang и предупреждения о неиспользуемых переменных
             if ! shellcheck -e SC2148,SC2034 "$file"; then
               echo "Ошибки в $file"
               FAILED=1
