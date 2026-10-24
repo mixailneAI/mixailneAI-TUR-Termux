@@ -9,6 +9,8 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -18,6 +20,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y dpkg-dev xz-utils
           pip install termux-apt-repo
+      - name: Clean old builds
+        run: |
+          rm -rf repo/
+          rm -rf debs/
       - name: Build .deb packages
         run: |
           mkdir -p debs
@@ -39,21 +45,16 @@ jobs:
             echo "echo 'Привет от $pkgname!'" >> /tmp/build/data/data/com.termux/files/usr/bin/$pkgname
             chmod +x /tmp/build/data/data/com.termux/files/usr/bin/$pkgname
             
-            # Явно используем xz для совместимости с termux-apt-repo
             dpkg-deb -Zxz --build /tmp/build debs/${pkgname}_1.0.0_all.deb
             rm -rf /tmp/build
           done
-      - name: Verify .deb contents
-        run: |
-          dpkg-deb -I debs/*.deb
-          echo "--- Проверка наличия data.tar.xz ---"
-          ar t debs/*.deb
       - name: Generate APT Repo
-        run: termux-apt-repo debs/ repo/
+        run: |
+          termux-apt-repo debs/ repo/ termux extras
       - name: Commit and Push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add repo/
-          git commit -m "Auto-update APT repo [skip ci]" || exit 0
+          git commit -m "Clean rebuild of APT repo [skip ci]" || exit 0
           git push
