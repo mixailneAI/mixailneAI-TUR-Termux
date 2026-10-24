@@ -3,25 +3,25 @@ Version: 1
 Architectures: all
 Description: termux repository
 Suite: termux
-Date: Sat, 24 Oct 2026 16:26:33 UTC
+Date: Sat, 24 Oct 2026 16:59:31 UTC
 Components: extras
 MD5Sum:
- 3f9d93e45e916202de4727fec4d1a568 481 extras/binary-all/Packages
- de615f4a97ca2580f53c12fc5456dde2 436 extras/binary-all/Packages.xz
+ 2fda3766cf2f2b38ca2c35cbe0b4e344 481 extras/binary-all/Packages
+ 3f32a03e544c07d4beb9df5f1120d02d 448 extras/binary-all/Packages.xz
  4c32a8e2d4a558df14013b026da9474e 120 extras/Contents-all.xz
  4ddda52c7992f3acb55b311faff65d3d 91 extras/Contents-all
 SHA1:
- 2342992d433fae2c2bd8a683d06b9f6bc3c0d5ba 481 extras/binary-all/Packages
- 3b82b06f3bd020347de5ebcd9dc181ec401b1036 436 extras/binary-all/Packages.xz
+ f92bffbd6c20268f0d7b1a69bdc510e694b19676 481 extras/binary-all/Packages
+ 21b4589590b723e13264b2db7cc96e9469d0cc10 448 extras/binary-all/Packages.xz
  3f8db95370686be3a08d316278986d676a86d0a3 120 extras/Contents-all.xz
  76a2a374a88692324775c3cc4bf235bd80d85d42 91 extras/Contents-all
 SHA256:
- e4c2eec70d22cfb7df1ec33820b3146b4db3cabad19a309f55505f7e7d1e80f2 481 extras/binary-all/Packages
- 1db8824a7501b8598986e3be08f061ce10004154c5518be4e06b9085710c0371 436 extras/binary-all/Packages.xz
+ 02a03b22e3b900b4a71088bf7dc2d639ae4db18a8efb83549eae9ceff4d461c3 481 extras/binary-all/Packages
+ 5ea65e47c76b416b984a5bcffdb9138cae4322cf3dfb46eb90f957eac775a601 448 extras/binary-all/Packages.xz
  8113e407574c9e2f29c79130a0e6cdfdee0ae188ac5ff53f33e6dc9d1a8c7f8d 120 extras/Contents-all.xz
  8469dafd91e43c45ed5e55d1e5896b503b2830ed5c71bc67345fa27f4ca9bbde 91 extras/Contents-all
 SHA512:
- cd00cb6e64a81c9c9a8342f753888515f01673ed1bf132791e4846b079051ab8afbeec5fa61a73d8d710f45449b37e2757aeb9260f00091040cfdeb5a78fef0a 481 extras/binary-all/Packages
- e3eb33f07e219fce11e75f5138ed9e34d2e6a8243d9dade28d10db5a8783f43b6c67700c57cf1e2ca40757088b6d91f3b749a3da91b5fa7d87fa21660d03229f 436 extras/binary-all/Packages.xz
+ ca9597b1bdcdcdf5b418b0bf7af59294587aea5b725bbb466968d96d646ddbfe630723a4d913a4b95c83c544f7fb944252877060cd43852426c542d4c0dc9a29 481 extras/binary-all/Packages
+ fa7285b4828c3e51b7fcf237b01ea84ef5d7ca200f3ff4c24b9502362d3a1acb8ec1c4ef805278272d6d38ffa8c7ddde25b6673bae267ccb5ef00a71c9032bc0 448 extras/binary-all/Packages.xz
  4887df843e1cdea0c7737f5cb31c9c621a717ec701a02b9fb5b5796b0bed359d7e9a728d02b980d2e176ae96fc880556acc9e9d4422fd4796323b338fefca25b 120 extras/Contents-all.xz
  9c29ef8e71f81b3a17b5d0dc22d2da1b4efd3a42ccd78ff94f06e1090825d93228d5805f7b3f6ace61137694d1b9aefbd4ef1251dfde71854dade24ce0e4ca69 91 extras/Contents-all
