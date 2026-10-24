@@ -25,21 +25,29 @@ jobs:
             pkgname=$(basename "$pkgdir")
             if [ "$pkgname" = "example-pkg" ]; then continue; fi
             
-            # Заглушка для сборки: создаем тестовый .deb
-            # В реальности тут должен быть вызов build-package.sh из termux-packages
             mkdir -p /tmp/build/DEBIAN /tmp/build/data/data/com.termux/files/usr/bin
             echo "Package: $pkgname" > /tmp/build/DEBIAN/control
             echo "Version: 1.0.0" >> /tmp/build/DEBIAN/control
             echo "Architecture: all" >> /tmp/build/DEBIAN/control
             echo "Maintainer: mixailneAI" >> /tmp/build/DEBIAN/control
             echo "Description: Auto built package" >> /tmp/build/DEBIAN/control
+            
+            # Обязательно выставляем правильные права на DEBIAN и control
+            chmod 755 /tmp/build/DEBIAN
+            chmod 644 /tmp/build/DEBIAN/control
+            
             echo '#!/data/data/com.termux/files/usr/bin/bash' > /tmp/build/data/data/com.termux/files/usr/bin/$pkgname
             echo "echo 'Привет от $pkgname!'" >> /tmp/build/data/data/com.termux/files/usr/bin/$pkgname
             chmod +x /tmp/build/data/data/com.termux/files/usr/bin/$pkgname
             
-            dpkg-deb --build /tmp/build debs/${pkgname}_1.0.0_all.deb
+            # Собираем пакет с gzip-сжатием для совместимости
+            dpkg-deb -Zgzip --build /tmp/build debs/${pkgname}_1.0.0_all.deb
             rm -rf /tmp/build
           done
+      - name: Verify .deb contents
+        run: |
+          # Проверяем, что в пакете есть control-файл
+          dpkg-deb -I debs/*.deb
       - name: Generate APT Repo
         run: termux-apt-repo debs/ repo/
       - name: Commit and Push
