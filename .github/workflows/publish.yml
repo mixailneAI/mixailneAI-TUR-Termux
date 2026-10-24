@@ -16,7 +16,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y dpkg-dev
+          sudo apt-get install -y dpkg-dev xz-utils
           pip install termux-apt-repo
       - name: Build .deb packages
         run: |
@@ -32,7 +32,6 @@ jobs:
             echo "Maintainer: mixailneAI" >> /tmp/build/DEBIAN/control
             echo "Description: Auto built package" >> /tmp/build/DEBIAN/control
             
-            # Обязательно выставляем правильные права на DEBIAN и control
             chmod 755 /tmp/build/DEBIAN
             chmod 644 /tmp/build/DEBIAN/control
             
@@ -40,14 +39,15 @@ jobs:
             echo "echo 'Привет от $pkgname!'" >> /tmp/build/data/data/com.termux/files/usr/bin/$pkgname
             chmod +x /tmp/build/data/data/com.termux/files/usr/bin/$pkgname
             
-            # Собираем пакет с gzip-сжатием для совместимости
-            dpkg-deb -Zgzip --build /tmp/build debs/${pkgname}_1.0.0_all.deb
+            # Явно используем xz для совместимости с termux-apt-repo
+            dpkg-deb -Zxz --build /tmp/build debs/${pkgname}_1.0.0_all.deb
             rm -rf /tmp/build
           done
       - name: Verify .deb contents
         run: |
-          # Проверяем, что в пакете есть control-файл
           dpkg-deb -I debs/*.deb
+          echo "--- Проверка наличия data.tar.xz ---"
+          ar t debs/*.deb
       - name: Generate APT Repo
         run: termux-apt-repo debs/ repo/
       - name: Commit and Push
